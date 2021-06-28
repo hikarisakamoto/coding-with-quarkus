@@ -1,24 +1,24 @@
 package org.acme.sakamoto.services;
 
-import org.acme.sakamoto.models.Book;
-import org.acme.sakamoto.repositories.BookRepository;
+import org.acme.sakamoto.models.Movie;
+import org.acme.sakamoto.repositories.MovieRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class BookService implements Service<Book> {
+public class MovieService implements Service<Movie> {
 
     @Inject
-    BookRepository repository;
+    MovieRepository repository;
 
     @Override
-    public Book add(Book entity) {
+    public Movie add(Movie entity) {
         return repository.add(entity);
     }
 
     @Override
-    public Book update(int id, Book entity) {
+    public Movie update(int id, Movie entity) {
         return repository.update(id, entity);
     }
 
