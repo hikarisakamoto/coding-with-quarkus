@@ -1,5 +1,6 @@
 package org.acme.sakamoto.services.clients;
 
+import org.acme.sakamoto.models.Movie;
 import org.acme.sakamoto.models.MovieSearchResponse;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
@@ -9,13 +10,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @RegisterRestClient(baseUri = "http://www.omdbapi.com/")
-public interface MovieClientServer {
+public interface OpenMovieDatabaseClientService {
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    MovieSearchResponse searchMovies(@QueryParam("s") String search, @QueryParam("apikey") String apiKey);
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    MovieSearchResponse searchMovies(@QueryParam("s") String search);
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    MovieSearchResponse findMovie(@QueryParam("t") String title);
+    Movie findMovie(@QueryParam("t") String title, @QueryParam("apikey") String apiKey);
 }

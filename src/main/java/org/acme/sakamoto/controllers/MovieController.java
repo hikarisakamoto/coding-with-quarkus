@@ -1,13 +1,19 @@
 package org.acme.sakamoto.controllers;
 
 import org.acme.sakamoto.models.Movie;
+import org.acme.sakamoto.models.MultipartBody;
 import org.acme.sakamoto.repositories.MovieRepository;
 import org.acme.sakamoto.services.MovieService;
+import org.acme.sakamoto.services.clients.MovieClientService;
+import org.acme.sakamoto.services.clients.OpenMovieDatabaseClientService;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.ByteArrayInputStream;
+import java.util.Base64;
 
 @Path("movies")
 public class MovieController {
@@ -16,6 +22,16 @@ public class MovieController {
     MovieService service;
     @Inject
     MovieRepository repository;
+    @Inject
+    @RestClient
+    OpenMovieDatabaseClientService movieDatabaseClientService;
+    @Inject
+    @RestClient
+    MovieClientService movieClientService;
+
+    private static final String apiKey = "ZDdiZGEwYTQ=";
+    byte[] decodedBytes = Base64.getDecoder().decode(apiKey);
+    String decodedString = new String(decodedBytes);
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -39,9 +55,34 @@ public class MovieController {
     }
 
     @GET
+    @Path("find")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@QueryParam("name") String name) {
-
-        return null;
+        return Response.ok(movieDatabaseClientService.findMovie(name, decodedString)).build();
     }
+
+    @GET
+    @Path("search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response search(@QueryParam("name") String name) {
+        return Response.ok(movieDatabaseClientService.searchMovies(name, decodedString)).build();
+    }
+
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String echoFile(String body) {
+        return body;
+    }
+
+    @Path("test")
+    @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    public String callEcho() {
+        final MultipartBody multipartBody = new MultipartBody();
+        multipartBody.file = new ByteArrayInputStream("Hello world".getBytes());
+        multipartBody.name = "hello.txt";
+        return movieClientService.sendFile(multipartBody);
+    }
+
 }
