@@ -22,7 +22,7 @@ import javax.ws.rs.core.Response;
 import java.io.ByteArrayInputStream;
 import java.util.Base64;
 
-@Path("movies")
+@Path("/movies")
 public class MovieController {
 
     @Inject

@@ -11,7 +11,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.util.concurrent.ConcurrentHashMap;
 
 @ApplicationScoped
-@ServerEndpoint(value = "movies/chat/{username}")
+@ServerEndpoint(value = "/movies/chat/{username}")
 public class MovieChat {
 
     private final ConcurrentHashMap<String, Session> sessionMap = new ConcurrentHashMap<>();
