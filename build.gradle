@@ -31,6 +31,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-resteasy-jsonb'
     implementation 'io.quarkus:quarkus-config-yaml'
     implementation 'io.quarkus:quarkus-resteasy'
+    implementation 'io.quarkus:quarkus-undertow-websockets'
     implementation 'io.quarkus:quarkus-logging-json'
     implementation 'io.quarkus:quarkus-arc'
     implementation 'org.jboss.resteasy:resteasy-multipart-provider'
